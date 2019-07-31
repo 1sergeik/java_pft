@@ -2,7 +2,6 @@ package ru.stqa.pft.addressbook;
 
 import java.util.concurrent.TimeUnit;
 import org.testng.annotations.*;
-import static org.testng.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -14,41 +13,56 @@ public class ContactCreationTests {
   public void setUp() throws Exception {
     wd = new FirefoxDriver();
     wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    wd.get("http://localhost/addressbook/");
+    login("admin", "secret");
+  }
+
+  private void login(String username, String password) {
+    wd.findElement(By.xpath("//body")).click();
+    wd.findElement(By.name("user")).click();
+    wd.findElement(By.name("user")).clear();
+    wd.findElement(By.name("user")).sendKeys(username);
+    wd.findElement(By.name("pass")).clear();
+    wd.findElement(By.name("pass")).sendKeys(password);
+    wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Пароль:'])[1]/following::input[2]")).click();
   }
 
   @Test
   public void testContactCreation() throws Exception {
-    wd.get("http://localhost/addressbook/");
-    wd.findElement(By.xpath("//body")).click();
-    wd.findElement(By.name("user")).click();
-    wd.findElement(By.name("user")).clear();
-    wd.findElement(By.name("user")).sendKeys("admin");
-    wd.findElement(By.name("pass")).clear();
-    wd.findElement(By.name("pass")).sendKeys("secret");
-    wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Пароль:'])[1]/following::input[2]")).click();
-    wd.findElement(By.linkText("Добавить контакт")).click();
+
+    initContactCreation();
+    fillContactForm(new ContactData("Sergei", "Koryakin", "+79218462210", "1sergeik@gmail.com"));
+    submitContactCreation();
+    returnToMainPage();
+  }
+
+  private void returnToMainPage() {
+    wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Примечание:'])[1]/following::input[1]")).click();
+    wd.findElement(By.linkText("Выйти")).click();
+  }
+
+  private void submitContactCreation() {
+    wd.findElement(By.name("theform")).click();
+  }
+
+  private void fillContactForm(ContactData contactData) {
     wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Адрес:'])[1]/following::input[1]")).click();
     wd.findElement(By.name("firstname")).click();
     wd.findElement(By.name("firstname")).clear();
-    wd.findElement(By.name("firstname")).sendKeys("Sergei");
+    wd.findElement(By.name("firstname")).sendKeys(contactData.getName());
+    wd.findElement(By.name("lastname")).click();
     wd.findElement(By.name("lastname")).clear();
-    wd.findElement(By.name("lastname")).sendKeys("Koryakin");
-    wd.findElement(By.name("nickname")).clear();
-    wd.findElement(By.name("nickname")).sendKeys("SergeiK");
-    wd.findElement(By.name("title")).clear();
-    wd.findElement(By.name("title")).sendKeys("engineer");
-    wd.findElement(By.name("company")).clear();
-    wd.findElement(By.name("company")).sendKeys("Xelicon");
-    wd.findElement(By.name("address")).clear();
-    wd.findElement(By.name("address")).sendKeys("Moskow");
+    wd.findElement(By.name("lastname")).sendKeys(contactData.getLast_name());
+    wd.findElement(By.name("mobile")).click();
     wd.findElement(By.name("mobile")).clear();
-    wd.findElement(By.name("mobile")).sendKeys("+79218462210");
-    wd.findElement(By.name("theform")).click();
+    wd.findElement(By.name("mobile")).sendKeys(contactData.getMobile());
     wd.findElement(By.name("email")).click();
     wd.findElement(By.name("email")).clear();
-    wd.findElement(By.name("email")).sendKeys("");
-    wd.findElement(By.xpath("(.//*[normalize-space(text()) and normalize-space(.)='Примечание:'])[1]/following::input[1]")).click();
-    wd.findElement(By.linkText("Выйти")).click();
+    wd.findElement(By.name("email")).sendKeys(contactData.getEmail());
+  }
+
+  private void initContactCreation() {
+    wd.findElement(By.linkText("Добавить контакт")).click();
   }
 
   @AfterMethod(alwaysRun = true)
