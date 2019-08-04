@@ -13,9 +13,9 @@ public class MyFirstProgram {
 
     System.out.println("Площадь прямоугольника со сторона " + r.a + " и " + r.b + " равна " + r.area());
 
-    Point p = new Point(-2,-9,1,-12);
-
-    System.out.println("Расстояние между точками p1 и p2 с координатами ("+p.x1+";"+p.y1+") и ("+p.x2+";"+p.y2+") равна " + p.distance());
+    Point p1 = new Point(-2.0,-9.0);
+    Point p2 = new Point (-5.0,-5.0);
+    System.out.println("Расстояние между точками p1 и p2 с координатами ("+p1.x +";"+p1.y +") и ("+p2.x+";"+p2.y+") равна " + p1.distance(p1,p2));
 
   }
 
@@ -26,6 +26,7 @@ public class MyFirstProgram {
   public static double area(Square s) {
     return s.l * s.l;
   }
+
 
 
 }

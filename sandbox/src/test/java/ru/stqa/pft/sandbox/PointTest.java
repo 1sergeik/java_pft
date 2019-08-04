@@ -2,7 +2,7 @@ package ru.stqa.pft.sandbox;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import ru.stqa.rft.Point;
+import ru.stqa.rft.P1;
 
 public class PointTest {
 
@@ -10,8 +10,8 @@ public class PointTest {
 
   public void testDistance() {
 
-    Point p;
-    p = new Point(3,-1,0,3);
+    P1 p;
+    p = new P1(3,-1,0,3);
     Assert.assertEquals(p.distance(),5.0);
 
 
