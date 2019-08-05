@@ -8,7 +8,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class GroupCreationTests {
   private WebDriver dw;
 
-  @BeforeClass(alwaysRun = true)
+  @BeforeMethod(alwaysRun = true)
   public void setUp() throws Exception {
     dw = new FirefoxDriver();
     dw.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -70,7 +70,7 @@ public class GroupCreationTests {
     dw.findElement(By.linkText("groups")).click();
   }
 
-  @AfterClass(alwaysRun = true)
+  @AfterMethod(alwaysRun = true)
   public void tearDown() throws Exception {
     dw.quit();
 
